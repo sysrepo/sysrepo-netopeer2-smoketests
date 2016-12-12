@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/rastislavszabo/sysrepo-netopeer2-smoketests.svg?branch=master)](https://travis-ci.org/rastislavszabo/sysrepo-netopeer2-smoketests)
+[![Build Status](https://travis-ci.org/sysrepo/sysrepo-netopeer2-smoketests.svg?branch=master)](https://travis-ci.org/sysrepo/sysrepo-netopeer2-smoketests)
 
 # Sysrepo - Netopeer2 smoke tests
 
