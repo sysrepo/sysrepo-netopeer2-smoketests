@@ -14,10 +14,10 @@ matrix:
       env: 
         - DOCKER_IMG_TAG=devel
         - NETOPEER_PORT=830
-#  allow_failures:
-#    - env: 
-#        - DOCKER_IMG_TAG=latest
-#        - NETOPEER_PORT=6001
+  allow_failures:
+    - env: 
+        - DOCKER_IMG_TAG=latest
+        - NETOPEER_PORT=6001
 
 cache: pip
 
