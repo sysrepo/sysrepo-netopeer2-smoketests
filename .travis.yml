@@ -1,0 +1,43 @@
+language: python
+
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      services: docker
+      env: 
+        - DOCKER_IMG_TAG=latest
+        - NETOPEER_PORT=6001
+    - os: linux
+      sudo: required
+      services: docker
+      env: 
+        - DOCKER_IMG_TAG=devel
+        - NETOPEER_PORT=830
+#  allow_failures:
+#    - env: 
+#        - DOCKER_IMG_TAG=latest
+#        - NETOPEER_PORT=6001
+
+cache: pip
+
+before_install:
+  - sudo docker pull sysrepo/sysrepo-netopeer2:$DOCKER_IMG_TAG
+  - sudo docker run -d -p 127.0.0.1:830:$NETOPEER_PORT --name sysrepo sysrepo/sysrepo-netopeer2:$DOCKER_IMG_TAG
+
+install:
+  - pip install ncclient
+
+script:
+  - sleep 1
+  - python -m unittest discover -v
+
+after_success:
+  - docker logs sysrepo
+
+after_failure:
+  - docker logs sysrepo
+
+notifications:
+  email:
+    - raszabo@cisco.com
