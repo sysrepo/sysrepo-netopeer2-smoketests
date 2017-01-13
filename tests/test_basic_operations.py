@@ -31,5 +31,23 @@ class TestBasicOperations(nctest.NCTestCase):
         reply = self.nc.get(filter=("xpath", "/non-existing-module:non-existing-data"))
         self.check_reply_err(reply)
 
+    def test_lock(self):
+        reply = self.nc.lock("startup")
+        self.check_reply_ok(reply)
+        reply = self.nc.lock("running")
+        self.check_reply_ok(reply)
+        reply = self.nc.lock("candidate")
+        self.check_reply_ok(reply)
+
+        reply = self.nc.lock("startup")
+        self.check_reply_err(reply)
+
+        reply = self.nc.unlock("startup")
+        self.check_reply_ok(reply)
+        reply = self.nc.unlock("running")
+        self.check_reply_ok(reply)
+        reply = self.nc.unlock("candidate")
+        self.check_reply_ok(reply)
+
 if __name__ == '__main__':
     unittest.main()

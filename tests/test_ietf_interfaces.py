@@ -78,6 +78,10 @@ class TestIETFInterfaces(nctest.NCTestCase):
         deltas = reply.data.xpath("/nc:rpc-reply/nc:data/if:interfaces/if:interface[if:name='TestInterface']", namespaces=self.ns)
         self.assertEqual(len(deltas), 0)
 
+        # commit - should fail, not enabled in running
+        reply = self.nc.commit()
+        self.check_reply_err(reply)
+
         # delete from candidate
         reply = self.nc.edit_config(target='candidate', config=config_xml.format("delete"))
         self.check_reply_ok(reply)
