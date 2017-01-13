@@ -23,18 +23,30 @@ class TestIETFInterfaces(nctest.NCTestCase):
                             <prefix-length>24</prefix-length>
                         </address>
                     </ipv4>
+                    <ipv6 xmlns="urn:ietf:params:xml:ns:yang:ietf-ip">
+                        <address>
+                            <ip>2001:db8::10</ip>
+                            <prefix-length>32</prefix-length>
+                        </address>
+                    </ipv6>
                 </interface>
             </interfaces>
         </nc:config>"""
-        
+
         filter_xml = """<nc:filter xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
             <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces" />
             </nc:filter>"""
-            
+
         filter_report_all_xml = """<nc:filter xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
             <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces" />
             </nc:filter>
             <with-defaults xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults">report-all</with-defaults>"""
+
+        # get from running - should be empty
+        reply = self.nc.get_config(source="running", filter=filter_xml)
+        self.check_reply_data(reply)
+        deltas = reply.data.xpath("/nc:rpc-reply/nc:data/if:interfaces/if:interface[if:name='TestInterface']", namespaces=self.ns)
+        self.assertEqual(len(deltas), 0)
 
         # set data - candidate
         reply = self.nc.edit_config(target='candidate', config=config_xml.format("merge"))
